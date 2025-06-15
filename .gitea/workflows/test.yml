@@ -18,11 +18,18 @@ jobs:
         python3 --version
         which python3
     
+    - name: 创建虚拟环境
+      run: |
+        python3 -m venv venv
+        source venv/bin/activate
+        echo "VIRTUAL_ENV=$VIRTUAL_ENV" >> $GITHUB_ENV
+        echo "$VIRTUAL_ENV/bin" >> $GITHUB_PATH
+    
     - name: 安装依赖
       run: |
-        python3 -m pip install --upgrade pip
-        pip3 install flake8 pytest
-        if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
+        python -m pip install --upgrade pip
+        pip install flake8 pytest
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     
     - name: 代码风格检查
       run: |
@@ -31,8 +38,8 @@ jobs:
     
     - name: 运行测试
       run: |
-        python3 -m pytest test_calculator.py -v || python3 -m unittest test_calculator.py -v
+        python -m pytest test_calculator.py -v || python -m unittest test_calculator.py -v
     
     - name: 运行主程序
       run: |
-        python3 calculator.py
+        python calculator.py
